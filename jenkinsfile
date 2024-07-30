@@ -35,5 +35,9 @@ docker.withRegistry('https://index.docker.io/v1/') {
  }
  }
  }
+stage('Deploy image') {
+ steps{
+ bat "docker run -d $registry:$BUILD_NUMBER"
+ }
 }
 }
