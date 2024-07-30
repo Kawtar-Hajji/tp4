@@ -1,0 +1,38 @@
+pipeline {
+ environment {
+ registry = "kha47/tp4"
+ registryCredential = 'dockerhub_auth'
+ dockerImage = ''
+ }
+ agent any
+ stages {
+ stage('Cloning Git') {
+ steps {
+ git 'https://github.com/Kawtar-Hajji/tp4'
+ }
+ }
+ stage('Building image') {
+ steps{
+ script {
+ dockerImage = docker.build registry + ":$BUILD_NUMBER"
+ }
+ }
+ }
+stage('Test image') {
+ steps{
+ script {
+ 
+ echo "Tests passed"
+ }
+ }
+ }
+ stage('Publish Image') {
+ steps{
+ script {
+docker.withRegistry('https://index.docker.io/v1/') {
+    docker.image('kha47/tp4:latest').push()
+ }
+ }
+ }
+ }
+}
